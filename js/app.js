@@ -126,6 +126,20 @@
       .join("");
   }
 
+  function mountSeed() {
+    const seed = String(data.seed || "").trim();
+    if (!seed) return;
+    document.querySelectorAll(".seed-slot").forEach((slot) => {
+      slot.innerHTML = `<div class="seed-banner">
+        <div>
+          <span>Seed do mapa</span>
+          <strong>${escapeHtml(seed)}</strong>
+        </div>
+        <button class="seed-copy" type="button">Copiar</button>
+      </div>`;
+    });
+  }
+
   function mountStats() {
     const projectsNode = document.querySelector("#stat-projects");
     const playersNode = document.querySelector("#stat-players");
@@ -194,8 +208,10 @@
         return `<a class="mode-card" href="#${escapeHtml(project.id)}">
           <div class="mode-art">
             <img alt="" data-src="${escapeHtml(project.image || "")}" data-fallback="${escapeHtml(fallbackArt(project))}">
+            ${project.video ? `<video class="mode-video" autoplay muted loop playsinline preload="auto" src="${escapeHtml(project.video)}"></video>` : ""}
             <span class="mode-tag">${escapeHtml(project.kind || "Estrutura")}</span>
             ${example}
+            ${project.video ? `<span class="mode-tag video-tag">Vídeo</span>` : ""}
           </div>
           <div class="mode-body">
             <div class="card-meta">
@@ -220,16 +236,28 @@
     grid.querySelectorAll("img").forEach((img) => {
       useImage(img, img.dataset.src, img.dataset.fallback);
     });
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    grid.querySelectorAll("video.mode-video").forEach((video) => {
+      if (reduceMotion) {
+        video.removeAttribute("autoplay");
+        video.pause();
+        return;
+      }
+      const play = video.play();
+      if (play) play.catch(() => {});
+    });
   }
 
   function renderPlayers() {
     if (!playerGrid) return;
     const needle = query.trim();
-    const visible = players.filter((player) => {
-      if (!needle) return true;
-      const related = projectsOf(player).map((project) => project.name).join(" ");
-      return `${player.name} ${player.role} ${related}`.toLowerCase().includes(needle);
-    });
+    const visible = players
+      .filter((player) => {
+        if (!needle) return true;
+        const related = projectsOf(player).map((project) => project.name).join(" ");
+        return `${player.name} ${player.role} ${related}`.toLowerCase().includes(needle);
+      })
+      .sort((a, b) => projectsOf(b).length - projectsOf(a).length);
 
     if (!visible.length) {
       playerGrid.innerHTML = `<p class="empty-state">${players.length ? "Nenhum jogador encontrado para essa busca." : "Os jogadores ainda vão ser listados, junto com as estruturas que cada um construiu."}</p>`;
@@ -304,8 +332,11 @@
     if (video) {
       if (project.video) {
         video.hidden = false;
+        video.muted = true;
         video.src = project.video;
         image.hidden = true;
+        const play = video.play();
+        if (play) play.catch(() => {});
       } else {
         video.pause();
         video.removeAttribute("src");
@@ -465,6 +496,32 @@
       });
     }
 
+    document.querySelectorAll(".seed-copy").forEach((button) => {
+      button.addEventListener("click", async () => {
+        const seed = String(data.seed || "").trim();
+        try {
+          if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(seed);
+          else {
+            const area = document.createElement("textarea");
+            area.value = seed;
+            area.setAttribute("readonly", "");
+            area.style.position = "fixed";
+            area.style.left = "-999px";
+            document.body.appendChild(area);
+            area.select();
+            document.execCommand("copy");
+            area.remove();
+          }
+          button.textContent = "Copiado";
+        } catch {
+          button.textContent = "Selecionar";
+        }
+        window.setTimeout(() => {
+          button.textContent = "Copiar";
+        }, 1600);
+      });
+    });
+
     if (backdrop) {
       backdrop.addEventListener("click", (event) => {
         if (event.target === backdrop) closeToPage();
@@ -514,6 +571,7 @@
   mountLogo();
   mountVideo();
   mountAddress();
+  mountSeed();
   mountStats();
   if (page === "estruturas") {
     renderFilters();
