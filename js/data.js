@@ -8,62 +8,35 @@
  *   Salve como images/logo.png (quadrado). O header troca o símbolo
  *   pela imagem assim que o arquivo existir. Ou preencha `logo` com outro caminho.
  *
- * Banner do topo
- *   Quando tiver a arte, coloque o caminho em `hero`, por exemplo "images/hero.jpg".
- *   Enquanto estiver vazio, o site usa a ilustração de images/hero.svg.
+ * Vídeo de fundo
+ *   O hero usa video_fundo.mp4, na raiz do site.
  *
- * Fotos das estruturas
- *   Salve em images/structures/ e aponte `image` para o arquivo.
- *   Exemplo: "images/structures/farm-de-ferro.png"
+ * Fotos, vídeos e coordenadas das estruturas
+ *   A foto entra em `image`. Se o arquivo tiver o mesmo nome do id,
+ *   por exemplo images/structures/farm-de-ferro.png, ela aparece sozinha.
+ *   Vídeo opcional em `video`. Coordenadas em `coords`.
  *
- * Fotos ou skins dos jogadores
- *   Salve em images/players/ e aponte `image` para o arquivo.
+ * Jogadores
+ *   Cadastre cada pessoa em `players` e liste os ids em `players` do projeto.
+ *   A página de jogadores monta o caminho inverso sozinha.
  *
- * Jogadores em cada projeto
- *   `players` dentro do projeto é uma lista de `id`.
- *   A seção de jogadores monta o caminho inverso sozinha.
- *
- * Quando os dados forem os oficiais, mude `demo` para false
- * para esconder o aviso de exemplo.
+ * Informações do servidor
+ *   O array `info` alimenta a página Informações: regras, contato e o que mais quiser.
+ *   Cada item pode ter `paragraphs`, `items` (lista) e `contact`.
  *
  * GitHub Pages: Settings → Pages → branch main, pasta raiz (/).
  * Os caminhos são relativos, então funciona em usuario.github.io/repo/.
  */
 window.RODNEY = {
-  demo: true,
+  demo: false,
   name: "Rodney Realm",
   address: "IP em breve",
   edition: "",
   logo: "images/logo.png",
-  hero: "",
-  meta: ["Somente survival", "Farms e bases da comunidade"],
+  video: "video_fundo.mp4",
+  meta: ["Somente survival", "Entrada por convite"],
 
-  players: [
-    {
-      id: "jogador-1",
-      name: "Jogador 1",
-      role: "Construtor",
-      image: "images/players/jogador-1.png",
-    },
-    {
-      id: "jogador-2",
-      name: "Jogador 2",
-      role: "Redstone",
-      image: "images/players/jogador-2.png",
-    },
-    {
-      id: "jogador-3",
-      name: "Jogador 3",
-      role: "Farms",
-      image: "images/players/jogador-3.png",
-    },
-    {
-      id: "jogador-4",
-      name: "Jogador 4",
-      role: "Exploração",
-      image: "images/players/jogador-4.png",
-    },
-  ],
+  players: [],
 
   projects: [
     {
@@ -71,91 +44,254 @@ window.RODNEY = {
       name: "Farm de Ferro",
       kind: "Farm",
       dimension: "Overworld",
-      status: "Ativa",
-      summary: "Vila compacta que produz ferro para as construções do reino.",
-      about: "Modelo de uma farm de ferro no estilo vila. Os villagers ficam nas células, o ferro cai na coleta central e o excesso segue para o armazenamento.",
+      status: "Pronta",
+      summary: "Produz ferro para as construções do reino.",
+      about: "Farm de ferro do Rodney Realm. Já está pronta.",
       image: "images/structures/farm-de-ferro.png",
+      video: "",
       coords: "",
-      players: ["jogador-1", "jogador-3"],
+      players: [],
+    },
+    {
+      id: "farm-de-comida",
+      name: "Farm de Comida",
+      kind: "Farm",
+      dimension: "Overworld",
+      status: "Pronta",
+      summary: "Abastece o reino com comida.",
+      about: "Farm de comida do Rodney Realm. Já está pronta.",
+      image: "images/structures/farm-de-comida.png",
+      video: "",
+      coords: "",
+      players: [],
     },
     {
       id: "farm-de-ouro",
       name: "Farm de Ouro",
       kind: "Farm",
       dimension: "Nether",
-      status: "Ativa",
-      summary: "Plataforma no Nether para ouro em quantidade, ligada ao hub.",
-      about: "Modelo de farm de ouro no Nether, com plataforma de spawn e túnel de volta ao overworld. A coleta fica marcada para quem mantém a build.",
+      status: "Pronta",
+      summary: "Produz ouro para o reino.",
+      about: "Farm de ouro do Rodney Realm. Já está pronta.",
       image: "images/structures/farm-de-ouro.png",
+      video: "",
       coords: "",
-      players: ["jogador-2", "jogador-3"],
+      players: [],
     },
     {
-      id: "base-do-spawn",
-      name: "Base do Spawn",
-      kind: "Base",
-      dimension: "Overworld",
-      status: "Em construção",
-      summary: "Ponto de encontro do reino: hall, camas e o caminho para as farms.",
-      about: "Modelo da base comunitária no spawn. É o lugar de onde saem os portais e as trilhas até as outras estruturas. Ainda em obra no exemplo.",
-      image: "images/structures/base-do-spawn.png",
+      id: "farm-de-trade-piglin",
+      name: "Farm de Trade-Piglin",
+      kind: "Farm",
+      dimension: "Nether",
+      status: "Pronta",
+      summary: "Trocas com piglins para os itens do Nether.",
+      about: "Farm de trade com piglins do Rodney Realm. Já está pronta.",
+      image: "images/structures/farm-de-trade-piglin.png",
+      video: "",
       coords: "",
-      players: ["jogador-1", "jogador-2", "jogador-3", "jogador-4"],
+      players: [],
     },
     {
-      id: "armazenamento",
-      name: "Armazenamento",
-      kind: "Redstone",
-      dimension: "Overworld",
-      status: "Ativa",
-      summary: "Sistema que separa os itens das farms e devolve o que cada baú pede.",
-      about: "Modelo de um ordenador com filtros por item. O que as farms produzem entra por um funil mestre e cada baú guarda um tipo só.",
-      image: "images/structures/armazenamento.png",
+      id: "farm-de-wither-skeleton",
+      name: "Farm de Wither Skeleton",
+      kind: "Farm",
+      dimension: "Nether",
+      status: "Em andamento",
+      summary: "Farm de wither skeletons, ainda em construção.",
+      about: "Farm de wither skeleton do Rodney Realm. A obra ainda está em andamento.",
+      image: "images/structures/farm-de-wither-skeleton.png",
+      video: "",
       coords: "",
-      players: ["jogador-1", "jogador-2"],
+      players: [],
+    },
+    {
+      id: "praca-central",
+      name: "Praça Central",
+      kind: "Estrutura",
+      dimension: "Overworld",
+      status: "Em andamento",
+      summary: "O ponto central do reino, ainda em construção.",
+      about: "Praça central do Rodney Realm. A obra ainda está em andamento.",
+      image: "images/structures/praca-central.png",
+      video: "",
+      coords: "",
+      players: [],
+    },
+    {
+      id: "farm-de-redstone",
+      name: "Farm de Redstone",
+      kind: "Farm",
+      dimension: "Overworld",
+      status: "Pronta",
+      summary: "Produz redstone para os mecanismos do mapa.",
+      about: "Farm de redstone do Rodney Realm. Já está pronta.",
+      image: "images/structures/farm-de-redstone.png",
+      video: "",
+      coords: "",
+      players: [],
+    },
+    {
+      id: "farm-de-ametista",
+      name: "Farm de Ametista",
+      kind: "Farm",
+      dimension: "Overworld",
+      status: "Pronta",
+      summary: "Coleta ametista para o reino.",
+      about: "Farm de ametista do Rodney Realm. Já está pronta.",
+      image: "images/structures/farm-de-ametista.png",
+      video: "",
+      coords: "",
+      players: [],
+    },
+    {
+      id: "farm-de-tridente-e-cobre",
+      name: "Farm de Tridente e Cobre",
+      kind: "Farm",
+      dimension: "Overworld",
+      status: "Pronta",
+      summary: "Junta tridentes e cobre.",
+      about: "Farm de tridente e cobre do Rodney Realm. Já está pronta.",
+      image: "images/structures/farm-de-tridente-e-cobre.png",
+      video: "",
+      coords: "",
+      players: [],
+    },
+    {
+      id: "farm-de-pillager",
+      name: "Farm de Pillager",
+      kind: "Farm",
+      dimension: "Overworld",
+      status: "Pronta",
+      summary: "Farm de pillagers do reino.",
+      about: "Farm de pillager do Rodney Realm. Já está pronta.",
+      image: "images/structures/farm-de-pillager.png",
+      video: "",
+      coords: "",
+      players: [],
+    },
+    {
+      id: "farm-de-raide",
+      name: "Farm de Raide",
+      kind: "Farm",
+      dimension: "Overworld",
+      status: "Pronta",
+      summary: "Farm de raids do reino.",
+      about: "Farm de raide do Rodney Realm. Já está pronta.",
+      image: "images/structures/farm-de-raide.png",
+      video: "",
+      coords: "",
+      players: [],
     },
     {
       id: "farm-de-xp",
       name: "Farm de XP",
       kind: "Farm",
       dimension: "Overworld",
-      status: "Ativa",
-      summary: "Câmara escura para experiência, usada nos encantamentos da base.",
-      about: "Modelo de farm de experiência da comunidade. A câmara fica fechada, com um ponto de ataque seguro e um baú para os drops.",
+      status: "Pronta",
+      summary: "Gera experiência para os encantamentos do reino.",
+      about: "Farm de XP do Rodney Realm. Já está pronta.",
       image: "images/structures/farm-de-xp.png",
+      video: "",
       coords: "",
-      players: ["jogador-3"],
+      players: [],
     },
     {
-      id: "hub-do-end",
-      name: "Hub do End",
-      kind: "Estrutura",
-      dimension: "End",
-      status: "Em construção",
-      summary: "Ponte e marco de retorno depois da luta com o dragão.",
-      about: "Modelo do hub no End: plataforma de pouso, baú de reposição e o caminho de volta ao portal. A ponte principal ainda está em construção neste exemplo.",
-      image: "images/structures/hub-do-end.png",
+      id: "farm-de-madeira",
+      name: "Farm de Madeira",
+      kind: "Farm",
+      dimension: "Overworld",
+      status: "Pronta",
+      summary: "Produz madeira para as construções do reino.",
+      about: "Farm de madeira do Rodney Realm. Já está pronta.",
+      image: "images/structures/farm-de-madeira.png",
+      video: "",
       coords: "",
-      players: ["jogador-1", "jogador-4"],
+      players: [],
+    },
+    {
+      id: "armazem",
+      name: "Armazém",
+      kind: "Estrutura",
+      dimension: "Overworld",
+      status: "Em andamento",
+      summary: "Depósito dos itens do reino, ainda em construção.",
+      about: "Armazém do Rodney Realm. A obra ainda está em andamento.",
+      image: "images/structures/armazem.png",
+      video: "",
+      coords: "",
+      players: [],
+    },
+    {
+      id: "nether-hub",
+      name: "Nether Hub",
+      kind: "Estrutura",
+      dimension: "Nether",
+      status: "Em andamento",
+      summary: "Hub de portais no Nether, ainda em construção.",
+      about: "Nether hub do Rodney Realm. A obra ainda está em andamento.",
+      image: "images/structures/nether-hub.png",
+      video: "",
+      coords: "",
+      players: [],
+    },
+    {
+      id: "sistema-de-transporte",
+      name: "Sistema de Transporte",
+      kind: "Estrutura",
+      dimension: "Overworld",
+      status: "Em andamento",
+      summary: "Liga as estruturas do mapa. A obra ainda está em construção.",
+      about: "Sistema de transporte do Rodney Realm. A obra ainda está em andamento.",
+      image: "images/structures/sistema-de-transporte.png",
+      video: "",
+      coords: "",
+      players: [],
+    },
+    {
+      id: "vila",
+      name: "Vila",
+      kind: "Base",
+      dimension: "Overworld",
+      status: "Em andamento",
+      summary: "A vila do reino, ainda em construção.",
+      about: "Vila do Rodney Realm. A obra ainda está em andamento.",
+      image: "images/structures/vila.png",
+      video: "",
+      coords: "",
+      players: [],
     },
   ],
 
-  faq: [
+  info: [
     {
-      q: "O Rodney Realm tem outros modos?",
-      a: "Não. O servidor é somente survival. Não há minigames nem um modo criativo aberto para a comunidade.",
+      title: "O servidor",
+      paragraphs: [
+        "O Rodney Realm é um servidor privado de Minecraft, somente no modo survival.",
+        "A entrada é por convite. Quem não foi chamado não entra.",
+      ],
     },
     {
-      q: "O que esta página mostra?",
-      a: "As estruturas e farms feitas no mapa, e os jogadores que participam de cada uma. Se alguém entra em mais de um projeto, o nome aparece em todos eles.",
+      title: "Regras",
+      paragraphs: [
+        "O reino é de quem constrói junto. Estas são as regras de convivência do survival.",
+      ],
+      items: [
+        "O servidor é somente survival. Não há criativo aberto nem outros modos.",
+        "Não quebre, não roube e não altere a construção de outra pessoa sem combinar.",
+        "Farms, baús e redstone de um projeto são de quem participa dele.",
+        "Conflito se resolve com a administração, sem grief e sem guerra no chat.",
+      ],
     },
     {
-      q: "Como eu entro no servidor?",
-      a: "Pelo endereço no topo da página. Enquanto o IP definitivo não estiver publicado, o campo mostra que ele ainda vai ser anunciado.",
-    },
-    {
-      q: "Uma construção nova pode entrar na lista?",
-      a: "Sim. Cada projeto compartilhado do reino pode ganhar um card, com a foto, o status e quem colocou a mão na massa.",
+      title: "Se tiver um problema",
+      paragraphs: [
+        "Item sumiu, uma build foi quebrada, o servidor caiu ou surgiu um conflito: fale com a administração do reino.",
+      ],
+      contact: {
+        name: "Administração",
+        role: "Quem cuida do servidor",
+        note: "Chame no jogo ou no grupo de quem foi convidado.",
+      },
     },
   ],
 };

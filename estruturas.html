@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Estruturas · Rodney Realm</title>
+  <meta name="description" content="Estruturas e farms do Rodney Realm, com os jogadores de cada projeto.">
+  <meta name="theme-color" content="#17211c">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="estruturas">
+  <a class="skip-link" href="#conteudo">Ir para as estruturas</a>
+
+  <header class="site-header" data-lock>
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <img class="brand-logo" alt="" hidden>
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+        Rodney Realm
+      </a>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Seções">
+        <a class="nav-link active" href="estruturas.html" aria-current="page">Estruturas</a>
+        <a class="nav-link" href="jogadores.html">Jogadores</a>
+        <a class="nav-link" href="informacoes.html">Informações</a>
+      </nav>
+      <a class="pixel-button header-cta" href="index.html#entrar">Convite</a>
+    </div>
+  </header>
+
+  <main data-lock>
+    <section class="section" id="conteudo">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">O mapa</p>
+            <h1 class="section-title">Estruturas e farms</h1>
+          </div>
+          <p class="section-intro">Tudo o que a comunidade levantou no survival: farms, bases, redstone e outras construções, com quem está em cada projeto.</p>
+        </div>
+        <p class="demo-banner" id="demo-banner" hidden><strong>Conteúdo de exemplo.</strong> As fotos e os nomes reais ainda vão entrar. Edite <code>js/data.js</code> e mude <code>demo</code> para <code>false</code> quando o reino estiver preenchido.</p>
+        <div class="toolbar">
+          <div class="filter-bar" id="filter-bar" role="group" aria-label="Filtrar por tipo"></div>
+          <label class="search">
+            <span class="sr-only">Buscar estrutura ou jogador</span>
+            <input id="search" type="search" placeholder="Buscar estrutura ou jogador" autocomplete="off">
+          </label>
+        </div>
+        <p class="result-count" id="result-count" aria-live="polite"></p>
+        <div class="card-grid" id="project-grid"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" data-lock>
+    <div class="container footer-inner">
+      <div>
+        <p class="footer-brand">Rodney Realm</p>
+        <p>Survival privado. Entrada só por convite.</p>
+      </div>
+      <a href="index.html">Início</a>
+    </div>
+  </footer>
+
+  <div class="dialog-backdrop" id="project-dialog" hidden>
+    <div class="dialog-panel project-dialog" id="dialog-panel" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+      <button class="dialog-close" id="dialog-close" type="button" aria-label="Fechar">
+        <svg viewBox="0 0 14 14" width="14" height="14" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+      </button>
+      <video class="dialog-hero" id="dialog-video" hidden controls playsinline></video>
+      <img class="dialog-hero" id="dialog-image" alt="">
+      <div class="dialog-body">
+        <p class="eyebrow" id="dialog-kicker"></p>
+        <h2 class="dialog-title" id="dialog-title"></h2>
+        <p class="dialog-copy" id="dialog-copy"></p>
+        <dl class="fact-row" id="dialog-facts"></dl>
+        <h3 class="dialog-sub">Quem participa</h3>
+        <ul class="dialog-players" id="dialog-players"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

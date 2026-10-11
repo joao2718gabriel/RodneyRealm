@@ -6,9 +6,9 @@
   const players = Array.isArray(data.players) ? data.players : [];
   const kindOrder = ["Farm", "Base", "Redstone", "Estrutura"];
 
+  const page = document.body.dataset.page || "home";
   const grid = document.querySelector("#project-grid");
   const playerGrid = document.querySelector("#player-grid");
-  const faqList = document.querySelector("#faq-list");
   const filterBar = document.querySelector("#filter-bar");
   const search = document.querySelector("#search");
   const resultCount = document.querySelector("#result-count");
@@ -98,21 +98,25 @@
     probe.src = src;
   }
 
-  function mountHero() {
-    const src = String(data.hero || "").trim();
-    if (!src) return;
-    const hero = document.querySelector(".hero-image");
-    const probe = new Image();
-    probe.onload = () => {
-      hero.src = src;
-    };
-    probe.src = src;
+  function mountVideo() {
+    const video = document.querySelector(".hero-video");
+    if (!video) return;
+    const source = video.querySelector("source");
+    if (source && data.video) source.src = data.video;
+    video.load();
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      video.removeAttribute("autoplay");
+      video.pause();
+    }
   }
 
   function mountAddress() {
+    const addressNode = document.querySelector("#server-ip");
+    if (!addressNode) return;
     const address = data.address || "IP em breve";
-    document.querySelector("#server-ip").textContent = address;
+    addressNode.textContent = address;
     const meta = document.querySelector("#hero-meta");
+    if (!meta) return;
     const items = [...(data.meta || [])];
     if (data.edition) items.push(data.edition);
     meta.innerHTML = items
@@ -121,8 +125,10 @@
   }
 
   function mountStats() {
-    document.querySelector("#stat-projects").textContent = String(projects.length);
-    document.querySelector("#stat-players").textContent = String(players.length);
+    const projectsNode = document.querySelector("#stat-projects");
+    const playersNode = document.querySelector("#stat-players");
+    if (projectsNode) projectsNode.textContent = String(projects.length);
+    if (playersNode) playersNode.textContent = String(players.length);
   }
 
   function kinds() {
@@ -140,6 +146,7 @@
   }
 
   function renderFilters() {
+    if (!filterBar) return;
     filterBar.innerHTML = kinds()
       .map((item) => {
         const active = item === kind ? " active" : "";
@@ -163,6 +170,7 @@
   }
 
   function renderProjects() {
+    if (!grid || !resultCount) return;
     const visible = visibleProjects();
     const noun = visible.length === 1 ? "estrutura" : "estruturas";
     resultCount.textContent = query || kind !== "Todas" ? `${visible.length} ${noun}` : `${projects.length} estruturas e farms`;
@@ -175,7 +183,7 @@
     grid.innerHTML = visible
       .map((project) => {
         const members = playersOf(project);
-        const names = members.length ? members.map((player) => player.name).join(", ") : "Jogadores a definir";
+        const names = members.length ? members.map((player) => player.name).join(", ") : "Jogadores a listar";
         const avatars = members
           .slice(0, 4)
           .map((player) => `<img alt="" data-src="${escapeHtml(player.image || "")}" data-fallback="${escapeHtml(avatarUri(player))}">`)
@@ -209,6 +217,7 @@
   }
 
   function renderPlayers() {
+    if (!playerGrid) return;
     const needle = query.trim();
     const visible = players.filter((player) => {
       if (!needle) return true;
@@ -217,7 +226,7 @@
     });
 
     if (!visible.length) {
-      playerGrid.innerHTML = `<p class="empty-state">${players.length ? "Nenhum jogador encontrado para essa busca." : "Nenhum jogador cadastrado ainda. Adicione a lista em js/data.js."}</p>`;
+      playerGrid.innerHTML = `<p class="empty-state">${players.length ? "Nenhum jogador encontrado para essa busca." : "Os jogadores ainda vão ser listados, junto com as estruturas que cada um construiu."}</p>`;
       return;
     }
 
@@ -225,7 +234,7 @@
       .map((player) => {
         const related = projectsOf(player);
         const chips = related.length
-          ? related.map((project) => `<a class="project-chip" href="#${escapeHtml(project.id)}">${escapeHtml(project.name)}</a>`).join("")
+          ? related.map((project) => `<a class="project-chip" href="estruturas.html#${escapeHtml(project.id)}">${escapeHtml(project.name)}</a>`).join("")
           : `<p class="quiet">Ainda não entra em nenhum projeto listado.</p>`;
         const example = data.demo ? `<p class="role">Exemplo · ${escapeHtml(player.role || "A definir")}</p>` : `<p class="role">${escapeHtml(player.role || "Jogador")}</p>`;
         return `<article class="player-card" id="player-${escapeHtml(player.id)}">
@@ -249,19 +258,53 @@
     });
   }
 
-  function renderFaq() {
-    const items = Array.isArray(data.faq) ? data.faq : [];
-    faqList.innerHTML = items
-      .map((item) => `<details class="faq-row">
-          <summary>${escapeHtml(item.q)}<svg viewBox="0 0 14 14" width="14" height="14" aria-hidden="true"><path d="M7 1v12M1 7h12" fill="none" stroke="currentColor" stroke-width="2"/></svg></summary>
-          <p>${formatText(item.a)}</p>
-        </details>`)
+  function renderInfo() {
+    const list = document.querySelector("#info-list");
+    if (!list) return;
+    const sections = Array.isArray(data.info) ? data.info : [];
+    if (!sections.length) {
+      list.innerHTML = `<p class="empty-state">Nenhuma informação cadastrada ainda. Edite o array info em js/data.js.</p>`;
+      return;
+    }
+    list.innerHTML = sections
+      .map((section) => {
+        const paragraphs = (section.paragraphs || []).map((paragraph) => `<p>${formatText(paragraph)}</p>`).join("");
+        const items = Array.isArray(section.items) && section.items.length
+          ? `<ul>${section.items.map((item) => `<li>${formatText(item)}</li>`).join("")}</ul>`
+          : "";
+        const contact = section.contact
+          ? `<div class="contact-box">
+              <strong>${escapeHtml(section.contact.name || "Administração")}</strong>
+              ${section.contact.role ? `<p class="role">${escapeHtml(section.contact.role)}</p>` : ""}
+              ${section.contact.note ? `<p class="note">${formatText(section.contact.note)}</p>` : ""}
+            </div>`
+          : "";
+        return `<article class="info-card">
+          <h3>${escapeHtml(section.title || "Informação")}</h3>
+          ${paragraphs}
+          ${items}
+          ${contact}
+        </article>`;
+      })
       .join("");
   }
 
   function fillDialog(project) {
     const image = document.querySelector("#dialog-image");
+    const video = document.querySelector("#dialog-video");
     image.alt = `Imagem de ${project.name}`;
+    if (video) {
+      if (project.video) {
+        video.hidden = false;
+        video.src = project.video;
+        image.hidden = true;
+      } else {
+        video.pause();
+        video.removeAttribute("src");
+        video.hidden = true;
+        image.hidden = false;
+      }
+    }
     useImage(image, project.image || "", fallbackArt(project));
     document.querySelector("#dialog-kicker").textContent = data.demo ? `${project.kind || "Estrutura"} · Exemplo` : (project.kind || "Estrutura");
     document.querySelector("#dialog-title").textContent = project.name;
@@ -281,11 +324,11 @@
     const members = playersOf(project);
     const list = document.querySelector("#dialog-players");
     if (!members.length) {
-      list.innerHTML = `<li class="quiet">Nenhum jogador vinculado a este projeto ainda.</li>`;
+      list.innerHTML = `<li class="quiet">Os jogadores desta estrutura ainda vão ser listados.</li>`;
       return;
     }
     list.innerHTML = members
-      .map((player) => `<li><a class="dialog-player" href="#player-${escapeHtml(player.id)}">
+      .map((player) => `<li><a class="dialog-player" href="jogadores.html#player-${escapeHtml(player.id)}">
           <img class="mini-avatar" alt="" data-src="${escapeHtml(player.image || "")}" data-fallback="${escapeHtml(avatarUri(player))}">
           <span><strong>${escapeHtml(player.name)}</strong><br><span class="role">${escapeHtml(player.role || "")}</span></span>
         </a></li>`)
@@ -301,7 +344,8 @@
   }
 
   function hideDialog() {
-    if (backdrop.hidden) return;
+    if (!backdrop || backdrop.hidden) return;
+    document.querySelector("#dialog-video")?.pause();
     backdrop.hidden = true;
     lockPage(false);
     if (lastFocus && typeof lastFocus.focus === "function") lastFocus.focus();
@@ -316,6 +360,7 @@
   }
 
   function syncHash() {
+    if (!backdrop) return;
     const id = decodeURIComponent(location.hash.replace(/^#/, ""));
     const project = projects.find((item) => item.id === id);
     if (project) openProject(project);
@@ -330,7 +375,7 @@
   }
 
   function onKeydown(event) {
-    if (backdrop.hidden) return;
+    if (!backdrop || backdrop.hidden) return;
     if (event.key === "Escape") {
       event.preventDefault();
       closeToPage();
@@ -351,95 +396,96 @@
   }
 
   function bind() {
-    filterBar.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-kind]");
-      if (!button) return;
-      kind = button.dataset.kind;
-      filterBar.querySelectorAll(".filter-chip").forEach((chip) => {
-        const on = chip.dataset.kind === kind;
-        chip.classList.toggle("active", on);
-        chip.setAttribute("aria-pressed", on ? "true" : "false");
-      });
-      renderProjects();
-    });
-
-    function openFromLink(event, selector) {
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
-      const link = event.target.closest(selector);
-      if (!link) return;
-      event.preventDefault();
-      history.pushState(null, "", link.getAttribute("href"));
-      syncHash();
-    }
-
-    grid.addEventListener("click", (event) => openFromLink(event, "a.mode-card"));
-    playerGrid.addEventListener("click", (event) => openFromLink(event, "a.project-chip"));
-
-    search.addEventListener("input", () => {
-      query = search.value.trim().toLowerCase();
-      renderProjects();
-      renderPlayers();
-    });
-
-    document.querySelector("#copy-ip").addEventListener("click", async () => {
-      const address = document.querySelector("#server-ip").textContent.trim();
-      const button = document.querySelector("#copy-ip");
-      try {
-        if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(address);
-        else {
-          const area = document.createElement("textarea");
-          area.value = address;
-          area.setAttribute("readonly", "");
-          area.style.position = "fixed";
-          area.style.left = "-999px";
-          document.body.appendChild(area);
-          area.select();
-          document.execCommand("copy");
-          area.remove();
-        }
-        button.textContent = "Copiado";
-      } catch {
-        button.textContent = "Selecionar";
-      }
-      window.setTimeout(() => {
-        button.textContent = "Copiar";
-      }, 1600);
-    });
-
-    backdrop.addEventListener("click", (event) => {
-      if (event.target === backdrop) closeToPage();
-    });
-    document.querySelector("#dialog-close").addEventListener("click", closeToPage);
-    document.addEventListener("keydown", onKeydown);
-    window.addEventListener("hashchange", syncHash);
-    window.addEventListener("popstate", syncHash);
-
-    navToggle.addEventListener("click", () => {
-      const open = nav.classList.toggle("open");
-      navToggle.setAttribute("aria-expanded", open ? "true" : "false");
-      navToggle.textContent = open ? "Fechar" : "Menu";
-    });
-    nav.addEventListener("click", (event) => {
-      if (event.target.closest("a")) {
-        nav.classList.remove("open");
-        navToggle.setAttribute("aria-expanded", "false");
-        navToggle.textContent = "Menu";
-      }
-    });
-
-    const links = [...document.querySelectorAll(".site-nav a")];
-    const sections = links.map((link) => document.querySelector(link.getAttribute("href"))).filter(Boolean);
-    if ("IntersectionObserver" in window) {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          links.forEach((link) => {
-            link.classList.toggle("active", link.getAttribute("href") === `#${entry.target.id}`);
-          });
+    if (filterBar) {
+      filterBar.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-kind]");
+        if (!button) return;
+        kind = button.dataset.kind;
+        filterBar.querySelectorAll(".filter-chip").forEach((chip) => {
+          const on = chip.dataset.kind === kind;
+          chip.classList.toggle("active", on);
+          chip.setAttribute("aria-pressed", on ? "true" : "false");
         });
-      }, { rootMargin: "-45% 0px -45% 0px" });
-      sections.forEach((section) => observer.observe(section));
+        renderProjects();
+      });
     }
+
+    if (grid) {
+      grid.addEventListener("click", (event) => {
+        if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) return;
+        const link = event.target.closest("a.mode-card");
+        if (!link) return;
+        event.preventDefault();
+        history.pushState(null, "", link.getAttribute("href"));
+        syncHash();
+      });
+    }
+
+    if (search) {
+      search.addEventListener("input", () => {
+        query = search.value.trim().toLowerCase();
+        if (grid) renderProjects();
+        if (playerGrid) renderPlayers();
+      });
+    }
+
+    const copyButton = document.querySelector("#copy-ip");
+    if (copyButton) {
+      copyButton.addEventListener("click", async () => {
+        const address = document.querySelector("#server-ip").textContent.trim();
+        try {
+          if (navigator.clipboard && window.isSecureContext) await navigator.clipboard.writeText(address);
+          else {
+            const area = document.createElement("textarea");
+            area.value = address;
+            area.setAttribute("readonly", "");
+            area.style.position = "fixed";
+            area.style.left = "-999px";
+            document.body.appendChild(area);
+            area.select();
+            document.execCommand("copy");
+            area.remove();
+          }
+          copyButton.textContent = "Copiado";
+        } catch {
+          copyButton.textContent = "Selecionar";
+        }
+        window.setTimeout(() => {
+          copyButton.textContent = "Copiar";
+        }, 1600);
+      });
+    }
+
+    if (backdrop) {
+      backdrop.addEventListener("click", (event) => {
+        if (event.target === backdrop) closeToPage();
+      });
+      document.querySelector("#dialog-close").addEventListener("click", closeToPage);
+      document.addEventListener("keydown", onKeydown);
+      window.addEventListener("hashchange", syncHash);
+      window.addEventListener("popstate", syncHash);
+    }
+
+    if (navToggle && nav) {
+      navToggle.addEventListener("click", () => {
+        const open = nav.classList.toggle("open");
+        navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+        navToggle.textContent = open ? "Fechar" : "Menu";
+      });
+      nav.addEventListener("click", (event) => {
+        if (event.target.closest("a")) {
+          nav.classList.remove("open");
+          navToggle.setAttribute("aria-expanded", "false");
+          navToggle.textContent = "Menu";
+        }
+      });
+    }
+  }
+
+  function scrollToHash() {
+    const id = decodeURIComponent(location.hash.replace(/^#/, ""));
+    if (!id || projects.some((project) => project.id === id)) return;
+    document.getElementById(id)?.scrollIntoView();
   }
 
   function warnData() {
@@ -455,16 +501,21 @@
     });
   }
 
-  if (data.demo) banner.hidden = false;
+  if (data.demo && banner) banner.hidden = false;
   mountLogo();
-  mountHero();
+  mountVideo();
   mountAddress();
   mountStats();
-  renderFilters();
-  renderProjects();
-  renderPlayers();
-  renderFaq();
+  if (page === "estruturas") {
+    renderFilters();
+    renderProjects();
+    syncHash();
+  }
+  if (page === "jogadores") {
+    renderPlayers();
+    scrollToHash();
+  }
+  if (page === "informacoes") renderInfo();
   bind();
-  syncHash();
   warnData();
 })();

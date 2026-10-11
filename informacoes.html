@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Informações · Rodney Realm</title>
+  <meta name="description" content="Regras do Rodney Realm e com quem falar se aparecer um problema.">
+  <meta name="theme-color" content="#17211c">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="informacoes">
+  <a class="skip-link" href="#conteudo">Ir para as informações</a>
+
+  <header class="site-header" data-lock>
+    <div class="container header-inner">
+      <a class="brand" href="index.html">
+        <img class="brand-logo" alt="" hidden>
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+        Rodney Realm
+      </a>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Seções">
+        <a class="nav-link" href="estruturas.html">Estruturas</a>
+        <a class="nav-link" href="jogadores.html">Jogadores</a>
+        <a class="nav-link active" href="informacoes.html" aria-current="page">Informações</a>
+      </nav>
+      <a class="pixel-button header-cta" href="index.html#entrar">Convite</a>
+    </div>
+  </header>
+
+  <main data-lock>
+    <section class="section" id="conteudo">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">O reino</p>
+            <h1 class="section-title">Informações</h1>
+          </div>
+          <p class="section-intro">Como o servidor funciona, as regras do survival e com quem falar quando algo der errado.</p>
+        </div>
+        <p class="demo-banner" id="demo-banner" hidden><strong>Texto de partida.</strong> As regras e o contato oficiais entram em <code>js/data.js</code>. Mude <code>demo</code> para <code>false</code> quando estiver valendo.</p>
+        <div class="info-list" id="info-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" data-lock>
+    <div class="container footer-inner">
+      <div>
+        <p class="footer-brand">Rodney Realm</p>
+        <p>Survival privado. Entrada só por convite.</p>
+      </div>
+      <a href="index.html">Início</a>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
