@@ -145,7 +145,6 @@ main,
   width: auto;
   max-width: 76px;
   object-fit: contain;
-  border-radius: 8px;
   flex-shrink: 0;
 }
 

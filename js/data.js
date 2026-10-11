@@ -32,7 +32,7 @@ window.RODNEY = {
   name: "Rodney Realm",
   address: "IP em breve",
   edition: "",
-  logo: "images/logo.jpg",
+  logo: "images/logo.png",
   video: "video_fundo.mp4",
   meta: ["Somente survival", "Entrada por convite"],
 
