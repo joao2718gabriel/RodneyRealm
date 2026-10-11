@@ -9,21 +9,26 @@
   <meta property="og:title" content="Rodney Realm">
   <meta property="og:description" content="Servidor privado de Minecraft, exclusivo de survival. Entrada só por convite.">
   <meta property="og:type" content="website">
-  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="images/logo.jpg" type="image/jpeg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body data-page="home">
-  <a class="skip-link" href="#entrar">Ir para o convite</a>
+  <div class="site-backdrop" aria-hidden="true">
+    <video class="backdrop-video" autoplay muted loop playsinline poster="images/hero.svg">
+      <source src="video_fundo.mp4" type="video/mp4">
+    </video>
+  </div>
+  <a class="skip-link" href="#topo">Ir para o conteúdo</a>
 
   <header class="site-header" data-lock>
     <div class="container header-inner">
       <a class="brand" href="#topo">
         <img class="brand-logo" alt="" hidden>
         <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
-        Rodney Realm
+        <span class="brand-name">Rodney Realm</span>
       </a>
       <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
       <nav class="site-nav" id="site-nav" aria-label="Seções">
@@ -31,26 +36,18 @@
         <a class="nav-link" href="jogadores.html">Jogadores</a>
         <a class="nav-link" href="informacoes.html">Informações</a>
       </nav>
-      <a class="pixel-button header-cta" href="#entrar">Convite</a>
     </div>
   </header>
 
   <main data-lock>
     <section class="hero" id="topo">
-      <video class="hero-video" autoplay muted loop playsinline poster="images/hero.svg">
-        <source src="video_fundo.mp4" type="video/mp4">
-      </video>
       <div class="container hero-content">
         <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Servidor privado</p>
+        <img class="hero-logo" src="images/logo.jpg" alt="" onerror="this.remove()">
         <h1>Rodney Realm</h1>
-        <p class="hero-copy">Survival, e só entra quem foi convidado. O reino guarda as estruturas do mapa, quem joga e as regras da casa.</p>
+        <p class="hero-copy">Survival, e só entra quem foi convidado. O servidor guarda as estruturas do mapa, quem joga e as regras da casa.</p>
         <div class="hero-actions">
           <a class="pixel-button" href="estruturas.html">Ver estruturas</a>
-          <div class="server-address" id="entrar">
-            <span class="address-label">IP</span>
-            <code id="server-ip">IP em breve</code>
-            <button class="copy-button" id="copy-ip" type="button">Copiar</button>
-          </div>
         </div>
         <div class="hero-meta" id="hero-meta"></div>
       </div>
@@ -68,12 +65,12 @@
         </div>
         <div class="stat">
           <strong id="stat-players">0</strong>
-          <span>jogadores no reino</span>
+          <span>jogadores no servidor</span>
         </div>
       </div>
     </section>
 
-    <section class="section" aria-label="Telas do reino">
+    <section class="section" aria-label="Telas do servidor">
       <div class="container">
         <div class="gate-grid">
           <a class="gate-card" href="estruturas.html">
@@ -84,10 +81,10 @@
           <a class="gate-card" href="jogadores.html">
             <p class="section-kicker">A comunidade</p>
             <h2>Jogadores</h2>
-            <p>Quem foi convidado para o reino e em quais projetos entra.</p>
+            <p>Quem foi convidado para o servidor e em quais projetos entra.</p>
           </a>
           <a class="gate-card" href="informacoes.html">
-            <p class="section-kicker">O reino</p>
+            <p class="section-kicker">O servidor</p>
             <h2>Informações</h2>
             <p>Regras do survival e com quem falar se aparecer um problema.</p>
           </a>

@@ -58,8 +58,8 @@
   }
 
   function avatarUri(player) {
-    const match = String(player.name || "").match(/\d+/);
-    const label = match ? match[0] : (String(player.name || "?").trim().charAt(0) || "?").toUpperCase();
+    const name = String(player.name || "?").trim();
+    const label = (/^\d+$/.test(name) ? name : name.charAt(0) || "?").toUpperCase();
     let hash = 0;
     for (const char of player.id || player.name || "x") hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
     const palette = ["#a6e85a", "#e8c56a", "#7ddec0", "#d5e38a"];
@@ -99,15 +99,17 @@
   }
 
   function mountVideo() {
-    const video = document.querySelector(".hero-video");
-    if (!video) return;
-    const source = video.querySelector("source");
-    if (source && data.video) source.src = data.video;
-    video.load();
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      video.removeAttribute("autoplay");
-      video.pause();
-    }
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.querySelectorAll(".backdrop-video").forEach((video) => {
+      const source = video.querySelector("source");
+      if (source && data.video) source.src = data.video;
+      if (reduce) {
+        video.removeAttribute("autoplay");
+        video.pause();
+        return;
+      }
+      video.load();
+    });
   }
 
   function mountAddress() {
@@ -159,7 +161,7 @@
   function matchesQuery(project) {
     if (!query) return true;
     const names = playersOf(project).map((player) => `${player.name} ${player.role}`).join(" ");
-    const haystack = [project.name, project.kind, project.dimension, project.status, project.summary, project.about, names]
+    const haystack = [project.name, project.kind, project.dimension, project.status, project.coords, project.summary, project.about, names]
       .join(" ")
       .toLowerCase();
     return haystack.includes(query);
@@ -201,6 +203,10 @@
               <span class="status" data-status="${escapeHtml(project.status || "")}">${escapeHtml(project.status || "")}</span>
             </div>
             <h3>${escapeHtml(project.name)}</h3>
+            <p class="coords-badge${project.coords ? "" : " pending"}">
+              <span>Coordenadas</span>
+              <strong>${escapeHtml(String(project.coords || "").trim() || "Em breve")}</strong>
+            </p>
             <p class="summary">${escapeHtml(project.summary || "")}</p>
             <div class="card-foot">
               <div class="avatar-stack">${avatars}</div>
@@ -236,7 +242,9 @@
         const chips = related.length
           ? related.map((project) => `<a class="project-chip" href="estruturas.html#${escapeHtml(project.id)}">${escapeHtml(project.name)}</a>`).join("")
           : `<p class="quiet">Ainda não entra em nenhum projeto listado.</p>`;
-        const example = data.demo ? `<p class="role">Exemplo · ${escapeHtml(player.role || "A definir")}</p>` : `<p class="role">${escapeHtml(player.role || "Jogador")}</p>`;
+        const example = data.demo
+          ? `<p class="role">Exemplo · ${escapeHtml(player.role || "A definir")}</p>`
+          : (player.role ? `<p class="role">${escapeHtml(player.role)}</p>` : "");
         return `<article class="player-card" id="player-${escapeHtml(player.id)}">
           <div class="player-id">
             <img class="player-avatar" alt="" data-src="${escapeHtml(player.image || "")}" data-fallback="${escapeHtml(avatarUri(player))}">
@@ -310,16 +318,17 @@
     document.querySelector("#dialog-title").textContent = project.name;
     document.querySelector("#dialog-copy").innerHTML = formatText(project.about || project.summary || "");
 
+    const coords = String(project.coords || "").trim();
     const facts = [
       ["Dimensão", project.dimension],
       ["Status", project.status],
       ["Tipo", project.kind],
     ];
-    if (project.coords) facts.push(["Coordenadas", project.coords]);
-    document.querySelector("#dialog-facts").innerHTML = facts
-      .filter(([, value]) => value)
-      .map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`)
-      .join("");
+    document.querySelector("#dialog-facts").innerHTML = `<div class="coords-banner${coords ? "" : " pending"}"><dt>Coordenadas</dt><dd>${escapeHtml(coords || "Em breve")}</dd></div>`
+      + facts
+        .filter(([, value]) => value)
+        .map(([label, value]) => `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`)
+        .join("");
 
     const members = playersOf(project);
     const list = document.querySelector("#dialog-players");

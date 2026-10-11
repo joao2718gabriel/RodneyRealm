@@ -6,13 +6,18 @@
   <title>Jogadores · Rodney Realm</title>
   <meta name="description" content="Jogadores convidados do Rodney Realm e os projetos de cada um.">
   <meta name="theme-color" content="#17211c">
-  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="images/logo.jpg" type="image/jpeg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body data-page="jogadores">
+  <div class="site-backdrop" aria-hidden="true">
+    <video class="backdrop-video" autoplay muted loop playsinline poster="images/hero.svg">
+      <source src="video_fundo.mp4" type="video/mp4">
+    </video>
+  </div>
   <a class="skip-link" href="#conteudo">Ir para os jogadores</a>
 
   <header class="site-header" data-lock>
@@ -20,7 +25,7 @@
       <a class="brand" href="index.html">
         <img class="brand-logo" alt="" hidden>
         <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
-        Rodney Realm
+        <span class="brand-name">Rodney Realm</span>
       </a>
       <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
       <nav class="site-nav" id="site-nav" aria-label="Seções">
@@ -28,7 +33,6 @@
         <a class="nav-link active" href="jogadores.html" aria-current="page">Jogadores</a>
         <a class="nav-link" href="informacoes.html">Informações</a>
       </nav>
-      <a class="pixel-button header-cta" href="index.html#entrar">Convite</a>
     </div>
   </header>
 
@@ -42,7 +46,6 @@
           </div>
           <p class="section-intro">Quem foi convidado para o Rodney Realm e os projetos em que cada pessoa entra.</p>
         </div>
-        <p class="demo-banner" id="demo-banner" hidden><strong>Conteúdo de exemplo.</strong> Os nomes reais ainda vão entrar. Edite <code>js/data.js</code> e mude <code>demo</code> para <code>false</code>.</p>
         <div class="toolbar">
           <label class="search">
             <span class="sr-only">Buscar jogador</span>

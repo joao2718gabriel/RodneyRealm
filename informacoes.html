@@ -6,13 +6,18 @@
   <title>Informações · Rodney Realm</title>
   <meta name="description" content="Regras do Rodney Realm e com quem falar se aparecer um problema.">
   <meta name="theme-color" content="#17211c">
-  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="images/logo.jpg" type="image/jpeg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body data-page="informacoes">
+  <div class="site-backdrop" aria-hidden="true">
+    <video class="backdrop-video" autoplay muted loop playsinline poster="images/hero.svg">
+      <source src="video_fundo.mp4" type="video/mp4">
+    </video>
+  </div>
   <a class="skip-link" href="#conteudo">Ir para as informações</a>
 
   <header class="site-header" data-lock>
@@ -20,7 +25,7 @@
       <a class="brand" href="index.html">
         <img class="brand-logo" alt="" hidden>
         <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
-        Rodney Realm
+        <span class="brand-name">Rodney Realm</span>
       </a>
       <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
       <nav class="site-nav" id="site-nav" aria-label="Seções">
@@ -28,7 +33,6 @@
         <a class="nav-link" href="jogadores.html">Jogadores</a>
         <a class="nav-link active" href="informacoes.html" aria-current="page">Informações</a>
       </nav>
-      <a class="pixel-button header-cta" href="index.html#entrar">Convite</a>
     </div>
   </header>
 
@@ -37,12 +41,11 @@
       <div class="container">
         <div class="section-head">
           <div>
-            <p class="section-kicker">O reino</p>
+            <p class="section-kicker">O servidor</p>
             <h1 class="section-title">Informações</h1>
           </div>
           <p class="section-intro">Como o servidor funciona, as regras do survival e com quem falar quando algo der errado.</p>
         </div>
-        <p class="demo-banner" id="demo-banner" hidden><strong>Texto de partida.</strong> As regras e o contato oficiais entram em <code>js/data.js</code>. Mude <code>demo</code> para <code>false</code> quando estiver valendo.</p>
         <div class="info-list" id="info-list"></div>
       </div>
     </section>
