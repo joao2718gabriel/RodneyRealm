@@ -55,7 +55,7 @@ window.RODNEY = {
       about: "Farm de ferro do Rodney Realm. Já está pronta.",
       image: "images/structures/farm-de-ferro.png",
       video: "",
-      coords: "",
+      coords: "10",
       players: ["shodhyperion", "swiftcape"],
     },
     {
