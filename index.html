@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Rodney Realm · Survival</title>
+  <meta name="description" content="Rodney Realm é um servidor de Minecraft somente survival. Veja as estruturas, as farms e os jogadores de cada projeto.">
+  <meta name="theme-color" content="#17211c">
+  <meta property="og:title" content="Rodney Realm">
+  <meta property="og:description" content="Servidor de Minecraft exclusivo de survival. Estruturas, farms e quem participa de cada projeto.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#projetos">Ir para as estruturas</a>
+
+  <header class="site-header" data-lock>
+    <div class="container header-inner">
+      <a class="brand" href="#topo">
+        <img class="brand-logo" alt="" hidden>
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+        Rodney Realm
+      </a>
+      <button class="nav-toggle" id="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav class="site-nav" id="site-nav" aria-label="Seções">
+        <a class="nav-link" href="#projetos">Estruturas</a>
+        <a class="nav-link" href="#jogadores">Jogadores</a>
+        <a class="nav-link" href="#faq">FAQ</a>
+      </nav>
+      <a class="pixel-button header-cta" href="#entrar">Jogar</a>
+    </div>
+  </header>
+
+  <main data-lock>
+    <section class="hero" id="topo">
+      <img class="hero-image" src="images/hero.svg" alt="">
+      <div class="container hero-content">
+        <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Somente survival</p>
+        <h1>Rodney Realm</h1>
+        <p class="hero-copy">Servidor de Minecraft exclusivo de survival. As farms, bases e outras estruturas do mapa ficam listadas aqui, com os jogadores que participam de cada projeto.</p>
+        <div class="hero-actions">
+          <a class="pixel-button" href="#projetos">Ver estruturas</a>
+          <div class="server-address" id="entrar">
+            <span class="address-label">IP</span>
+            <code id="server-ip">IP em breve</code>
+            <button class="copy-button" id="copy-ip" type="button">Copiar</button>
+          </div>
+        </div>
+        <div class="hero-meta" id="hero-meta"></div>
+      </div>
+    </section>
+
+    <section class="community-band" aria-label="Resumo do servidor">
+      <div class="container band-inner">
+        <div class="stat">
+          <strong>Survival</strong>
+          <span>modo do servidor</span>
+        </div>
+        <div class="stat">
+          <strong id="stat-projects">0</strong>
+          <span>estruturas e farms</span>
+        </div>
+        <div class="stat">
+          <strong id="stat-players">0</strong>
+          <span>jogadores no reino</span>
+        </div>
+      </div>
+    </section>
+
+    <noscript><div class="container"><p class="noscript">Ative o JavaScript para ver as estruturas e os jogadores.</p></div></noscript>
+
+    <section class="section" id="projetos">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">O mapa</p>
+            <h2 class="section-title">Estruturas e farms</h2>
+          </div>
+          <p class="section-intro">Tudo o que a comunidade levantou no survival: farms, bases, redstone e outras construções, com quem está em cada projeto.</p>
+        </div>
+        <p class="demo-banner" id="demo-banner" hidden><strong>Conteúdo de exemplo.</strong> As fotos, a logo e os nomes reais ainda vão entrar. Edite <code>js/data.js</code> e mude <code>demo</code> para <code>false</code> quando o reino estiver preenchido.</p>
+        <div class="toolbar">
+          <div class="filter-bar" id="filter-bar" role="group" aria-label="Filtrar por tipo"></div>
+          <label class="search">
+            <span class="sr-only">Buscar estrutura ou jogador</span>
+            <input id="search" type="search" placeholder="Buscar estrutura ou jogador" autocomplete="off">
+          </label>
+        </div>
+        <p class="result-count" id="result-count" aria-live="polite"></p>
+        <div class="card-grid" id="project-grid"></div>
+      </div>
+    </section>
+
+    <section class="section" id="jogadores">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <p class="section-kicker">A comunidade</p>
+            <h2 class="section-title">Jogadores</h2>
+          </div>
+          <p class="section-intro">Quem joga no Rodney Realm e os projetos em que cada pessoa entra. Um jogador pode aparecer em várias estruturas.</p>
+        </div>
+        <div class="player-grid" id="player-grid"></div>
+      </div>
+    </section>
+
+    <section class="section" id="faq">
+      <div class="container">
+        <p class="section-kicker">Dúvidas</p>
+        <h2 class="section-title">Perguntas frequentes</h2>
+        <div class="faq-list" id="faq-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" data-lock>
+    <div class="container footer-inner">
+      <div>
+        <p class="footer-brand">Rodney Realm</p>
+        <p>Survival apenas. Sem outros modos.</p>
+      </div>
+      <a href="#topo">Voltar ao topo</a>
+    </div>
+  </footer>
+
+  <div class="dialog-backdrop" id="project-dialog" hidden>
+    <div class="dialog-panel project-dialog" id="dialog-panel" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+      <button class="dialog-close" id="dialog-close" type="button" aria-label="Fechar">
+        <svg viewBox="0 0 14 14" width="14" height="14" aria-hidden="true"><path d="M2 2l10 10M12 2L2 12" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+      </button>
+      <img class="dialog-hero" id="dialog-image" alt="">
+      <div class="dialog-body">
+        <p class="eyebrow" id="dialog-kicker"></p>
+        <h2 class="dialog-title" id="dialog-title"></h2>
+        <p class="dialog-copy" id="dialog-copy"></p>
+        <dl class="fact-row" id="dialog-facts"></dl>
+        <h3 class="dialog-sub">Quem participa</h3>
+        <ul class="dialog-players" id="dialog-players"></ul>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
